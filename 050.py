@@ -1,3 +1,4 @@
+import itertools
 import math
 def is_prime(n):
 	if n == 2:
@@ -9,13 +10,26 @@ def is_prime(n):
 			return False
 	return True
 
-l = 0
-primes = [0] + [p for p in range(5000) if is_prime(p)]
-sums = {p:sum(primes[:primes.index(p) + 1]) for p in primes}
+def esieve(n):
+	b = {x:True for x in range(2, n+1)}
+	for i in range(2, int(math.sqrt(n))+1):
+		if b[i]:
+			for j in range((n-i**2)//i + 1):
+				b[i**2 + j*i] = False
+	return [p for p in b if b[p]]
+
+m = 0
+limit = 1000000
+primes = esieve(limit)
 for i in range(len(primes)):
-	for j in range(len(primes)-1, i-1, -1):
-		s = sums[primes[j]] - sums[primes[i-1]]
-		if l < s < 1000000 and is_prime(s):
-			print(s, j - i)
-			l = s
-print(l)
+	for j in range(1, len(primes)-i+1):
+		p = primes[i:i+j]
+		l = len(p)
+		s = sum(p)
+		if s < limit:
+			if m < l:
+				if is_prime(s):
+					m = l
+					print(s, l)
+		else:
+			break
