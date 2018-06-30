@@ -7,7 +7,7 @@ def sieve(n):
 			yield i
 			for j in range(i**2, n+1, i):
 				a[j] = False
-n = 100
+n = 10000
 factors = defaultdict(int)
 for i in range(2, n + 1):
 	d = defaultdict(int)
@@ -22,3 +22,5 @@ m = 1
 for k, v in factors.items():
 	m *= (k ** v)
 print(m)
+print()
+print(len(str(m)))
